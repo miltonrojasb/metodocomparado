@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad: Aprendiendo el Método Comparado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            color: #2c3e50;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            z-index: 1000;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .intro-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .intro-section p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .scenario {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .scenario h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .scenario-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .scenario-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .scenario-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .scenario-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .scenario-table tr:hover {
+            background: #e8f4f8;
+        }
+
+        .task {
+            background: #e8f8f5;
+            border: 2px solid #27ae60;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .task h4 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .task label {
+            display: block;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .task label:hover {
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .task input[type="radio"],
+        .task input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .feedback {
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 1em;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .method-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .method-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .method-box p {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .method-box strong {
+            color: #c95f0e;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .comparison-card h5 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .comparison-card p {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .comparison-card strong {
+            color: #3498db;
+        }
+
+        .summary-box {
+            background: #ecf0f1;
+            border: 2px solid #95a5a6;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .summary-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .summary-item:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .key-concept {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-style: italic;
+            color: #1565c0;
+        }
+
+        footer {
+            background: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timer {
+                position: static;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="timer" id="timer">45:00</div>
+
+<div class="container">
+    <header>
+        <h1>🔍 Aprendiendo el Método Comparado</h1>
+        <p>Analiza sistemas políticos ficticios y descubre patrones usando MSSD y MDSD</p>
+    </header>
+
+    <div class="content">
+        <!-- SECCIÓN 0: INTRODUCCIÓN -->
+        <div class="section active" id="section0">
+            <div class="intro-section">
+                <h2>¿Cómo aprenderemos hoy?</h2>
+                <p>
+                    En los próximos 45 minutos, analizarás <strong>4 sistemas políticos ficticios</strong> (llamados Alfabia, Betaland, Gammatón y Deltarquía) usando dos diseños comparativos fundamentales: el <strong>MSSD</strong> (Diseño de Sistemas Más Similares) y el <strong>MDSD</strong> (Diseño de Sistemas Más Diferentes).
+                </p>
+                <p style="margin-top: 20px;">
+                    Tu objetivo es identificar qué variables explican las diferencias (o similitudes) en los niveles de <strong>participación ciudadana</strong> entre estos países.
+                </p>
+
+                <div class="method-box" style="margin-top: 30px;">
+                    <h4>📌 Lo que practicarás:</h4>
+                    <p>✓ Identificar similitudes y diferencias entre casos</p>
+                    <p>✓ Aplicar MSSD: comparar casos similares con resultados distintos</p>
+                    <p>✓ Aplicar MDSD: comparar casos distintos con resultados similares</p>
+                    <p>✓ Aislar variables explicativas (causas)</p>
+                    <p>✓ Hacer inferencias causales rigurosas</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="goToSection(1)">Comenzar actividad →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: PRESENTACIÓN DE ESCENARIOS -->
+        <div class="section" id="section1">
+            <h2>Sección 1: Conoce los sistemas políticos</h2>
+            <p style="margin-bottom: 30px; font-size: 1.05em;">Aquí están los 4 sistemas ficticios. Lee atentamente todas las características.</p>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%;"></div>
+            </div>
+
+            <!-- ALFABIA -->
+            <div class="scenario">
+                <h3>🌍 ALFABIA</h3>
+                <table class="scenario-table">
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Sistema Electoral</strong></td>
+                        <td>Mayoritario (ganador se lleva todo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acceso a información pública</strong></td>
+                        <td>Muy restringido (gobierno controla medios)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instituciones de participación</strong></td>
+                        <td>Limitadas; no hay mecanismos de consulta vinculante</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel de educación cívica</strong></td>
+                        <td>Bajo (60% completó secundaria)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desigualdad económica (GINI)</strong></td>
+                        <td>Alta (48)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Confianza institucional</strong></td>
+                        <td>Baja (30%)</td>
+                    </tr>
+                    <tr>
+                        <td style="background: #fff9e6;"><strong>📊 PARTICIPACIÓN CIUDADANA</strong></td>
+                        <td style="background: #fff9e6;"><strong style="color: #e74c3c;">BAJA (15%)</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- BETALAND -->
+            <div class="scenario">
+                <h3>🌍 BETALAND</h3>
+                <table class="scenario-table">
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Sistema Electoral</strong></td>
+                        <td>Proporcional (múltiples partidos representados)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acceso a información pública</strong></td>
+                        <td>Muy abierto (libertad de prensa, datos públicos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instituciones de participación</strong></td>
+                        <td>Robustas; referéndums, cabildos abiertos, participación presupuestaria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel de educación cívica</strong></td>
+                        <td>Alto (92% completó secundaria)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desigualdad económica (GINI)</strong></td>
+                        <td>Baja (28)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Confianza institucional</strong></td>
+                        <td>Alta (75%)</td>
+                    </tr>
+                    <tr>
+                        <td style="background: #d4edda;"><strong>📊 PARTICIPACIÓN CIUDADANA</strong></td>
+                        <td style="background: #d4edda;"><strong style="color: #28a745;">ALTA (72%)</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- GAMMATÓN -->
+            <div class="scenario">
+                <h3>🌍 GAMMATÓN</h3>
+                <table class="scenario-table">
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Sistema Electoral</strong></td>
+                        <td>Mayoritario (ganador se lleva todo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acceso a información pública</strong></td>
+                        <td>Muy abierto (libertad de prensa, datos públicos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instituciones de participación</strong></td>
+                        <td>Robustas; referéndums, cabildos abiertos, participación presupuestaria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel de educación cívica</strong></td>
+                        <td>Alto (88% completó secundaria)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desigualdad económica (GINI)</strong></td>
+                        <td>Baja (30)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Confianza institucional</strong></td>
+                        <td>Alta (72%)</td>
+                    </tr>
+                    <tr>
+                        <td style="background: #d4edda;"><strong>📊 PARTICIPACIÓN CIUDADANA</strong></td>
+                        <td style="background: #d4edda;"><strong style="color: #28a745;">ALTA (68%)</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- DELTARQUÍA -->
+            <div class="scenario">
+                <h3>🌍 DELTARQUÍA</h3>
+                <table class="scenario-table">
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Sistema Electoral</strong></td>
+                        <td>Proporcional (múltiples partidos representados)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acceso a información pública</strong></td>
+                        <td>Muy restringido (gobierno controla medios)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instituciones de participación</strong></td>
+                        <td>Limitadas; no hay mecanismos de consulta vinculante</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel de educación cívica</strong></td>
+                        <td>Bajo (62% completó secundaria)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desigualdad económica (GINI)</strong></td>
+                        <td>Alta (50)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Confianza institucional</strong></td>
+                        <td>Baja (28%)</td>
+                    </tr>
+                    <tr>
+                        <td style="background: #fff9e6;"><strong>📊 PARTICIPACIÓN CIUDADANA</strong></td>
+                        <td style="background: #fff9e6;"><strong style="color: #e74c3c;">BAJA (18%)</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="key-concept">
+                <strong>💡 Observación inicial:</strong> Nota que hay dos países con participación ALTA (Betaland, Gammatón) y dos con participación BAJA (Alfabia, Deltarquía). Tu tarea es explicar por qué.
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="goToSection(0)">← Atrás</button>
+                <button class="btn-primary" onclick="goToSection(2)">Siguiente: Análisis MSSD →</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: MSSD -->
+        <div class="section" id="section2">
+            <h2>Sección 2: Diseño de Sistemas Más Similares (MSSD)</h2>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%;"></div>
+            </div>
+
+            <div class="method-box">
+                <h4>¿Qué es MSSD?</h4>
+                <p>
+                    Comparamos <strong>casos que son muy parecidos</strong> en muchas características, pero que tienen <strong>resultados diferentes</strong>.
+                    Esto nos permite <strong>aislar la variable que explica la diferencia</strong>.
+                </p>
+                <p style="margin-top: 10px;">
+                    <strong>Lógica:</strong> Si dos sistemas son idénticos en todo excepto en una variable, y sus resultados difieren, esa variable debe ser la causa.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 30px;">Comparación MSSD: Alfabia vs. Gammatón</h3>
+            <p style="margin-bottom: 20px;">
+                <strong>Pregunta guía:</strong> ¿Por qué Alfabia tiene baja participación (15%) y Gammatón alta participación (68%)?
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h5>Alfabia</h5>
+                    <p><strong>Sistema Electoral:</strong> Mayoritario</p>
+                    <p><strong>Acceso a información:</strong> Muy restringido ❌</p>
+                    <p><strong>Instituciones de participación:</strong> Limitadas</p>
+                    <p><strong>Educación cívica:</strong> Baja</p>
+                    <p><strong>GINI:</strong> 48 (desigualdad)</p>
+                    <p><strong>Confianza:</strong> 30%</p>
+                    <p style="margin-top: 15px; background: #fff9e6; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: BAJA participación (15%)</strong>
+                    </p>
+                </div>
+
+                <div class="comparison-card">
+                    <h5>Gammatón</h5>
+                    <p><strong>Sistema Electoral:</strong> Mayoritario</p>
+                    <p><strong>Acceso a información:</strong> Muy abierto ✓</p>
+                    <p><strong>Instituciones de participación:</strong> Robustas</p>
+                    <p><strong>Educación cívica:</strong> Alta</p>
+                    <p><strong>GINI:</strong> 30 (menos desigualdad)</p>
+                    <p><strong>Confianza:</strong> 72%</p>
+                    <p style="margin-top: 15px; background: #d4edda; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: ALTA participación (68%)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <strong>⚠️ Advertencia metodológica:</strong> Mira bien la tabla. Alfabia y Gammatón en realidad SOLO comparten el sistema electoral (ambos mayoritarios). 
+                En las otras 5 variables (información, instituciones, educación, GINI, confianza) son opuestos. 
+                Esto significa que este NO es un caso ideal de MSSD (que exigiría similitud en casi todo). Es útil solo para una cosa muy puntual: 
+                como el sistema electoral es igual en ambos y la participación es distinta, podemos <strong>descartar el sistema electoral</strong> como causa. 
+                Pero como información, instituciones, educación, GINI y confianza cambian TODAS a la vez, no podemos aislar cuál de ellas es la responsable.
+            </div>
+
+            <div class="task">
+                <h4>📝 Tarea 1: Identifica qué variable comparten Alfabia y Gammatón</h4>
+                <p style="margin-bottom: 15px;">¿Cuál es la única variable que Alfabia y Gammatón tienen en común?</p>
+
+                <label>
+                    <input type="radio" name="mssd1" value="a"> El sistema electoral (ambos son mayoritarios)
+                </label>
+                <label>
+                    <input type="radio" name="mssd1" value="b"> El acceso a información pública
+                </label>
+                <label>
+                    <input type="radio" name="mssd1" value="c"> El nivel de educación cívica
+                </label>
+                <label>
+                    <input type="radio" name="mssd1" value="d"> La desigualdad económica (GINI)
+                </label>
+
+                <button class="btn-primary" style="margin-top: 15px;" onclick="checkMSSD1()">Verificar respuesta</button>
+                <div class="feedback" id="feedback-mssd1"></div>
+            </div>
+
+            <div class="task" style="margin-top: 30px;">
+                <h4>📝 Tarea 2: El límite de este diseño</h4>
+                <p style="margin-bottom: 15px;">
+                    Información, instituciones, educación, GINI y confianza difieren TODAS a la vez entre Alfabia y Gammatón. 
+                    Con solo este par de casos, ¿qué podemos concluir honestamente?
+                </p>
+
+                <label>
+                    <input type="radio" name="mssd2" value="a"> Que el acceso a información pública es, sin duda, la única causa
+                </label>
+                <label>
+                    <input type="radio" name="mssd2" value="b"> Que el sistema electoral no explica la diferencia, pero no podemos aislar cuál de las otras 5 variables es la causante, porque cambian juntas
+                </label>
+                <label>
+                    <input type="radio" name="mssd2" value="c"> Que la confianza institucional es la única variable relevante
+                </label>
+                <label>
+                    <input type="radio" name="mssd2" value="d"> Que el GINI no tiene ninguna relación con la participación
+                </label>
+
+                <button class="btn-primary" style="margin-top: 15px;" onclick="checkMSSD2()">Verificar respuesta</button>
+                <div class="feedback" id="feedback-mssd2"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="goToSection(1)">← Atrás</button>
+                <button class="btn-primary" onclick="goToSection(3)">Siguiente: Análisis MDSD →</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: MDSD -->
+        <div class="section" id="section3">
+            <h2>Sección 3: Diseño de Sistemas Más Diferentes (MDSD)</h2>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+
+            <div class="method-box">
+                <h4>¿Qué es MDSD?</h4>
+                <p>
+                    Comparamos <strong>casos que son muy diferentes</strong> en muchas características, pero que comparten un <strong>resultado similar</strong>.
+                    Esto nos permite encontrar <strong>variables comunes que explican ese resultado</strong>, incluso a pesar de las grandes diferencias contextuales.
+                </p>
+                <p style="margin-top: 10px;">
+                    <strong>Lógica:</strong> Si dos sistemas muy distintos llegan al mismo resultado, las variables que comparten deben ser las causas.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 30px;">Comparación MDSD: Betaland vs. Gammatón</h3>
+            <p style="margin-bottom: 20px;">
+                <strong>Pregunta guía:</strong> ¿Por qué Betaland y Gammatón tienen ALTA participación (72% y 68%), a pesar de ser distintos en otros aspectos?
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h5>Betaland</h5>
+                    <p><strong>Sistema Electoral:</strong> Proporcional ⚙️</p>
+                    <p><strong>Acceso a información:</strong> Muy abierto ✓</p>
+                    <p><strong>Instituciones de participación:</strong> Robustas</p>
+                    <p><strong>Educación cívica:</strong> Muy alta (92%)</p>
+                    <p><strong>GINI:</strong> 28 (baja desigualdad)</p>
+                    <p><strong>Confianza:</strong> 75%</p>
+                    <p style="margin-top: 15px; background: #d4edda; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: ALTA participación (72%)</strong>
+                    </p>
+                </div>
+
+                <div class="comparison-card">
+                    <h5>Gammatón</h5>
+                    <p><strong>Sistema Electoral:</strong> Mayoritario ⚙️</p>
+                    <p><strong>Acceso a información:</strong> Muy abierto ✓</p>
+                    <p><strong>Instituciones de participación:</strong> Robustas</p>
+                    <p><strong>Educación cívica:</strong> Alta (88%)</p>
+                    <p><strong>GINI:</strong> 30 (baja desigualdad)</p>
+                    <p><strong>Confianza:</strong> 72%</p>
+                    <p style="margin-top: 15px; background: #d4edda; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: ALTA participación (68%)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <strong>🔑 Observación crucial:</strong> Betaland tiene electoral <strong>proporcional</strong>, pero Gammatón tiene <strong>mayoritario</strong>. 
+                Ambos tienen alta participación. Entonces: <strong>el sistema electoral NO explica la participación.</strong>
+                ¿Qué SÍ comparten?
+            </div>
+
+            <div class="key-concept">
+                <strong>⚠️ Advertencia metodológica:</strong> Nota que Betaland y Gammatón en realidad son casi gemelos: solo difieren en el sistema electoral. 
+                Esto es útil para descartar esa variable, pero NO es un ejemplo fuerte de MDSD, porque MDSD busca casos <strong>muy diferentes en contexto general</strong> 
+                (por ejemplo, distintos continentes, niveles de desarrollo o culturas) que aun así comparten el resultado. Aquí casi no hay diferencias de contexto que superar.
+            </div>
+
+            <h3 style="margin-top: 30px;">Refuerzo: el mismo patrón se repite con Alfabia vs. Deltarquía</h3>
+            <p style="margin-bottom: 20px;">
+                Para confiar más en que el sistema electoral no importa, conviene revisar si el mismo patrón se repite también entre los dos países de BAJA participación.
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h5>Alfabia</h5>
+                    <p><strong>Sistema Electoral:</strong> Mayoritario ⚙️</p>
+                    <p><strong>Acceso a información:</strong> Muy restringido ❌</p>
+                    <p><strong>Instituciones de participación:</strong> Limitadas</p>
+                    <p><strong>Educación cívica:</strong> Baja (60%)</p>
+                    <p><strong>GINI:</strong> 48 (alta desigualdad)</p>
+                    <p><strong>Confianza:</strong> 30%</p>
+                    <p style="margin-top: 15px; background: #fff9e6; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: BAJA participación (15%)</strong>
+                    </p>
+                </div>
+
+                <div class="comparison-card">
+                    <h5>Deltarquía</h5>
+                    <p><strong>Sistema Electoral:</strong> Proporcional ⚙️</p>
+                    <p><strong>Acceso a información:</strong> Muy restringido ❌</p>
+                    <p><strong>Instituciones de participación:</strong> Limitadas</p>
+                    <p><strong>Educación cívica:</strong> Baja (62%)</p>
+                    <p><strong>GINI:</strong> 50 (alta desigualdad)</p>
+                    <p><strong>Confianza:</strong> 28%</p>
+                    <p style="margin-top: 15px; background: #fff9e6; padding: 10px; border-radius: 4px;">
+                        <strong>Resultado: BAJA participación (18%)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <strong>🔑 El patrón se confirma:</strong> Alfabia (mayoritario) y Deltarquía (proporcional) también difieren en sistema electoral, 
+                y ambos tienen BAJA participación. Esto refuerza, con un segundo par de casos, que el sistema electoral no es la variable relevante — 
+                ni para explicar alta ni baja participación. Lo que sí se mantiene constante en cada par (información, instituciones, educación, GINI, confianza) 
+                es lo que parece explicar el resultado.
+            </div>
+
+            <div class="task">
+                <h4>📝 Tarea 3: Identifica variables comunes en MDSD</h4>
+                <p style="margin-bottom: 15px;">Betaland y Gammatón tienen ALTA participación. ¿Qué tienen en común?</p>
+
+                <label>
+                    <input type="radio" name="mdsd1" value="a"> El mismo sistema electoral
+                </label>
+                <label>
+                    <input type="radio" name="mdsd1" value="b"> Acceso abierto a información, instituciones de participación robustas, educación cívica alta, confianza alta
+                </label>
+                <label>
+                    <input type="radio" name="mdsd1" value="c"> El mismo nivel de desigualdad
+                </label>
+                <label>
+                    <input type="radio" name="mdsd1" value="d"> El mismo número de habitantes
+                </label>
+
+                <button class="btn-primary" style="margin-top: 15px;" onclick="checkMDSD1()">Verificar respuesta</button>
+                <div class="feedback" id="feedback-mdsd1"></div>
+            </div>
+
+            <div class="task" style="margin-top: 30px;">
+                <h4>📝 Tarea 4: Deducción causal con MDSD</h4>
+                <p style="margin-bottom: 15px;">
+                    Basándote en que Betaland (proporcional) y Gammatón (mayoritario) ambos tienen alta participación, 
+                    ¿cuál de estas conclusiones es CORRECTA?
+                </p>
+
+                <label>
+                    <input type="radio" name="mdsd2" value="a"> El sistema electoral proporcional es requisito para la participación alta
+                </label>
+                <label>
+                    <input type="radio" name="mdsd2" value="b"> El sistema electoral mayoritario impide la participación
+                </label>
+                <label>
+                    <input type="radio" name="mdsd2" value="c"> Otros factores (acceso a información, educación, confianza, instituciones) importan más que el sistema electoral
+                </label>
+                <label>
+                    <input type="radio" name="mdsd2" value="d"> No podemos sacar conclusiones con sólo dos casos
+                </label>
+
+                <button class="btn-primary" style="margin-top: 15px;" onclick="checkMDSD2()">Verificar respuesta</button>
+                <div class="feedback" id="feedback-mdsd2"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="goToSection(2)">← Atrás</button>
+                <button class="btn-primary" onclick="goToSection(4)">Siguiente: Síntesis →</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: CONCLUSIONES -->
+        <div class="section" id="section4">
+            <h2>Sección 4: Síntesis y Conclusiones</h2>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+
+            <h3>¿Qué aprendimos?</h3>
+
+            <div class="summary-box">
+                <h3>Descubrimientos usando el método comparado:</h3>
+                <div class="summary-item">
+                    <strong>Variable 1: Acceso a información pública</strong> — Los sistemas con transparencia y libertad de prensa TIENEN participación alta. 
+                    Alfabia (restringido) tiene baja; Betaland y Gammatón (abiertos) tienen alta.
+                </div>
+                <div class="summary-item">
+                    <strong>Variable 2: Educación cívica</strong> — Correlaciona fuertemente con participación. 
+                    Alfabia (60%) baja participación; Betaland (92%) y Gammatón (88%) alta participación.
+                </div>
+                <div class="summary-item">
+                    <strong>Variable 3: Confianza institucional</strong> — Países con poca confianza (Alfabia 30%, Deltarquía 28%) tienen baja participación. 
+                    Países con alta confianza (Betaland 75%, Gammatón 72%) tienen alta participación.
+                </div>
+                <div class="summary-item">
+                    <strong>Variable 4: Instituciones de participación</strong> — Mecanismos formales (referéndums, cabildos, presupuestos participativos) 
+                    existen en sistemas con alta participación.
+                </div>
+                <div class="summary-item">
+                    <strong>Variable DESCARTADA: Sistema electoral</strong> — Betaland (proporcional) y Gammatón (mayoritario) tienen ambos alta participación; 
+                    Alfabia (mayoritario) y Deltarquía (proporcional) tienen ambos baja participación. En los dos pares el sistema electoral cambia sin que 
+                    cambie el resultado. Esto sugiere que el sistema electoral NO ES la causa principal de participación.
+                </div>
+                <div class="summary-item">
+                    <strong>Limitación importante:</strong> En este ejercicio, información pública, instituciones, educación cívica, GINI y confianza 
+                    cambian siempre JUNTAS entre los 4 países. Eso permite descartar el sistema electoral con bastante confianza, pero NO permite 
+                    aislar cuál de esas 5 variables es la verdadera causa: podría ser una sola, varias combinadas, o que actúen en cadena unas sobre otras. 
+                    Una investigación real necesitaría más casos donde estas variables no se muevan siempre en bloque.
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Cómo usamos MSSD y MDSD:</h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h5>MSSD (buscamos aislar una causa)</h5>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Comparamos Alfabia vs. Gammatón</p>
+                    <p>
+                        ✓ Comparten: sistema electoral (mayoritario)<br>
+                        ✗ Difieren en: información, instituciones, educación, GINI, confianza<br>
+                        → Resultado distinto
+                    </p>
+                    <p style="margin-top: 15px; font-weight: bold; color: #2c3e50;">
+                        Conclusión: descarta el sistema electoral, pero NO permite aislar una sola causa entre las 5 variables restantes, porque covarían todas juntas.
+                    </p>
+                </div>
+
+                <div class="comparison-card">
+                    <h5>MDSD (buscamos validar qué se repite)</h5>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Comparamos Betaland vs. Gammatón, y Alfabia vs. Deltarquía</p>
+                    <p>
+                        ✗ Difieren en: sistema electoral (en ambos pares)<br>
+                        ✓ Similares en: información, instituciones, educación, confianza (dentro de cada par)<br>
+                        → Mismo resultado dentro de cada par
+                    </p>
+                    <p style="margin-top: 15px; font-weight: bold; color: #2c3e50;">
+                        Conclusión: el sistema electoral no importa; el bloque de información, instituciones, educación y confianza sí se asocia con el resultado.
+                    </p>
+                </div>
+            </div>
+
+            <div class="key-concept" style="margin-top: 30px;">
+                <strong>💡 Lección metodológica:</strong> El método comparado nos permite:
+                <br><br>
+                1. <strong>Descartar causas</strong> (si una variable es igual entre casos con resultados distintos, o distinta entre casos con el mismo resultado, esa variable no explica la diferencia)<br>
+                2. <strong>Detectar cuando hay variables que covarían</strong> (cuando varias cosas cambian siempre juntas, no podemos aislar cuál es la causa real con estos casos únicamente)<br>
+                3. <strong>Validar hallazgos con más de un par de casos</strong> (repetir la comparación con otro par, como hicimos con Alfabia-Deltarquía, da más confianza que un solo par)<br>
+                4. <strong>Reconocer los límites de un diseño</strong> (ni Alfabia-Gammatón es un MSSD ideal, ni Betaland-Gammatón es un MDSD ideal — son aproximaciones simplificadas útiles para practicar la lógica, no ejemplos perfectos de manual)
+            </div>
+
+            <div class="task">
+                <h4>📝 Tarea 5: Síntesis personal</h4>
+                <p style="margin-bottom: 15px;">
+                    Imagina que quieres investigar la participación ciudadana en Colombia. 
+                    ¿Cuáles serían las 3 variables que priorizarías investigar basándote en lo que aprendiste?
+                </p>
+
+                <textarea id="reflection" style="width: 100%; height: 120px; padding: 15px; border: 2px solid #3498db; border-radius: 6px; font-family: Arial; font-size: 1em; resize: vertical;" placeholder="Escribe tus 3 variables y por qué..."></textarea>
+
+                <button class="btn-primary" style="margin-top: 15px;" onclick="showReflectionFeedback()">Guardar reflexión</button>
+                <div class="feedback" id="feedback-reflection"></div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Referencias metodológicas que usamos:</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li><strong>Przeworski & Teune (1970)</strong> — Diseños MSSD y MDSD</li>
+                <li><strong>Arend Lijphart (1971)</strong> — "El método comparado" vs. método estadístico</li>
+                <li><strong>Giovanni Sartori (1970)</strong> — Estiramiento conceptual y escala de abstracción</li>
+                <li><strong>Todd Landman (2003)</strong> — Propósitos de la comparación política</li>
+            </ul>
+
+            <div class="button-group">
+                <button class="btn-secondary" onclick="goToSection(3)">← Atrás</button>
+                <button class="btn-secondary" onclick="resetActivity()">🔄 Reiniciar actividad</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Actividad diseñada para estudiantes de 6° semestre de Ciencia Política | 45 minutos | Método: MSSD y MDSD</p>
+    </footer>
+</div>
+
+<script>
+    let currentSection = 0;
+    let timeRemaining = 45 * 60; // 45 minutos en segundos
+
+    // Actualizar timer
+    function updateTimer() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('timer').textContent = 
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        if (timeRemaining <= 300) { // Últimos 5 minutos
+            document.getElementById('timer').style.background = '#c0392b';
+        }
+        if (timeRemaining <= 0) {
+            document.getElementById('timer').textContent = '¡Tiempo!';
+            document.getElementById('timer').style.background = '#2c3e50';
+        }
+        timeRemaining--;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // Navegación
+    function goToSection(n) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('section' + n).classList.add('active');
+        currentSection = n;
+        window.scrollTo(0, 0);
+    }
+
+    // Validaciones MSSD
+    function checkMSSD1() {
+        const selected = document.querySelector('input[name="mssd1"]:checked');
+        if (!selected) {
+            alert('Por favor selecciona una respuesta');
+            return;
+        }
+        const feedback = document.getElementById('feedback-mssd1');
+        if (selected.value === 'a') {
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = '<strong>✓ ¡Correcto!</strong> El sistema electoral (mayoritario) es la ÚNICA variable que Alfabia y Gammatón comparten. En todo lo demás (información, instituciones, educación, GINI, confianza) son opuestos.';
+        } else {
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = '<strong>✗ No es correcto.</strong> Revisa la tabla: esa variable en realidad DIFIERE entre Alfabia y Gammatón. La única que comparten es el sistema electoral.';
+        }
+    }
+
+    function checkMSSD2() {
+        const selected = document.querySelector('input[name="mssd2"]:checked');
+        if (!selected) {
+            alert('Por favor selecciona una respuesta');
+            return;
+        }
+        const feedback = document.getElementById('feedback-mssd2');
+        if (selected.value === 'b') {
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = '<strong>✓ ¡Excelente!</strong> Esto es lo honesto que exige el método comparado: como el sistema electoral es igual en ambos y la participación difiere, podemos DESCARTAR el sistema electoral. Pero información, instituciones, educación, GINI y confianza cambian todas juntas, así que con solo este par de casos NO podemos aislar cuál de ellas es la causa real. Se necesitarían más casos donde estas variables no covaríen.';
+        } else {
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = '<strong>✗ Reconsideralo.</strong> El problema de este par de casos es precisamente que 5 variables cambian a la vez. Eso impide señalar una sola causa con certeza, aunque sí permite descartar el sistema electoral (que es el que se mantiene igual).';
+        }
+    }
+
+    // Validaciones MDSD
+    function checkMDSD1() {
+        const selected = document.querySelector('input[name="mdsd1"]:checked');
+        if (!selected) {
+            alert('Por favor selecciona una respuesta');
+            return;
+        }
+        const feedback = document.getElementById('feedback-mdsd1');
+        if (selected.value === 'b') {
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = '<strong>✓ ¡Perfecto!</strong> Betaland y Gammatón comparten: información abierta, instituciones de participación robustas, educación cívica alta (92% vs 88%) y confianza alta (75% vs 72%). Solo difieren en sistema electoral, así que este par es más débil de lo ideal para MDSD (que buscaría casos muy distintos en contexto general) — pero el patrón se confirma con el segundo par, Alfabia vs. Deltarquía.';
+        } else {
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = '<strong>✗ Revisa los datos.</strong> El sistema electoral difiere (Betaland proporcional, Gammatón mayoritario), así que NO es variable común. ¿Qué SÍ comparten?';
+        }
+    }
+
+    function checkMDSD2() {
+        const selected = document.querySelector('input[name="mdsd2"]:checked');
+        if (!selected) {
+            alert('Por favor selecciona una respuesta');
+            return;
+        }
+        const feedback = document.getElementById('feedback-mdsd2');
+        if (selected.value === 'c') {
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = '<strong>✓ ¡Exacto!</strong> Betaland (proporcional) y Gammatón (mayoritario) tienen AMBOS alta participación, y Alfabia (mayoritario) y Deltarquía (proporcional) tienen AMBOS baja participación. En los dos pares el sistema electoral cambia sin cambiar el resultado. Por lo tanto, el sistema electoral no es determinante. Lo que SÍ importa: información, educación, confianza e instituciones de participación.';
+        } else {
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = '<strong>✗ Piénsalo de nuevo.</strong> Si dos sistemas de elección distintos producen el mismo resultado, ¿puede ser que el sistema electoral sea la causa? ¿O hay otras variables más importantes?';
+        }
+    }
+
+    // Reflexión final
+    function showReflectionFeedback() {
+        const text = document.getElementById('reflection').value.trim();
+        const feedback = document.getElementById('feedback-reflection');
+        if (text.length === 0) {
+            alert('Por favor escribe tu reflexión');
+            return;
+        }
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = '<strong>✓ Excelente reflexión.</strong> Acabas de aplicar lo que aprendiste: usar datos comparativos para priorizar variables. En una investigación real, estas 3 variables serían tus hipótesis de partida. Ahora validarías o refutarías cada una con evidencia empírica.';
+    }
+
+    // Reiniciar
+    function resetActivity() {
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
